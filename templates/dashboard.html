@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SecureVault</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styledashboard.css') }}">
+    {% if get_flashed_messages() %}
+        <meta http-equiv="refresh" content="5">
+    {% endif %}
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    <main class="container dashboard-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                        <a href="#" class="btn-close" aria-label="Close">×</a>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <h1 class="dashboard-title">Dashboard</h1>
+        
+        <div class="row summary-section">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Account Summary</h5>
+                        <ul class="list-group">
+                            <li class="list-item">
+                                <span>Username</span>
+                                <span>{{ username }}</span>
+                            </li>
+                            <li class="list-item">
+                                <span>Stored Passwords</span>
+                                <span class="badge">{{ password_count }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Quick Actions</h5>
+                        <div class="button-grid">
+                            <a href="{{ url_for('view_passwords') }}" class="btn btn-primary">
+                                <span class="icon icon-key"></span> View All Passwords
+                            </a>
+                            <a href="{{ url_for('add_password') }}" class="btn btn-success">
+                                <span class="icon icon-plus"></span> Add New Password
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row feature-section">
+            <div class="col-4">
+                <a href="{{ url_for('view_passwords') }}" class="feature-link">
+                    <div class="stat-card">
+                        <div class="feature-icon icon-primary">
+                            <span class="icon icon-shield"></span>
+                        </div>
+                        <h4>Security Center</h4>
+                        <p class="text-muted">Manage and review your password security.</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-4">
+                <a href="{{ url_for('add_password') }}" class="feature-link">
+                    <div class="stat-card">
+                        <div class="feature-icon icon-success">
+                            <span class="icon icon-plus"></span>
+                        </div>
+                        <h4>Add New Password</h4>
+                        <p class="text-muted">Securely store your credentials.</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-4">
+                <a href="{{ url_for('public_password_generator') }}" class="feature-link">
+                    <div class="stat-card">
+                        <div class="feature-icon icon-info">
+                            <span class="icon icon-shuffle"></span>
+                        </div>
+                        <h4>Password Generator</h4>
+                        <p class="text-muted">Create strong, unique passwords.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

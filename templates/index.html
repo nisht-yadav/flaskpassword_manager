@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureVault - Password Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleindex.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">SecureVault</a>
+            <button class="navbar-toggle" id="menuToggle">
+                <span class="menu-icon"></span>
+            </button>
+            <div class="navbar-menu" id="navbarMenu">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <meta http-equiv="refresh" content="5;url={{ url_for('index') }}">
+            {% endif %}
+        {% endwith %}
+
+        <section class="hero">
+            <h1 class="hero-title">Secure Password Manager</h1>
+            <p class="hero-text">Store all your passwords in one secure location with advanced encryption.</p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('register') }}" class="btn btn-primary">Get Started</a>
+                <a href="{{ url_for('login') }}" class="btn btn-secondary">Login</a>
+            </div>
+        </section>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Advanced Encryption</h3>
+                <p>Your passwords are encrypted with AES-256, one of the strongest encryption algorithms available.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔑</div>
+                <h3>One Master Password</h3>
+                <p>Remember just one strong master password to access all your other passwords.</p>
+            </div>
+            <a href="{{ url_for('public_password_generator') }}" class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Password Generator</h3>
+                <p>Generate strong, unique passwords with our built-in password generator.</p>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // Simple navigation toggle for mobile
+        const menuToggle = document.getElementById('menuToggle');
+        const navbarMenu = document.getElementById('navbarMenu');
+        
+        menuToggle.addEventListener('click', () => {
+            navbarMenu.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

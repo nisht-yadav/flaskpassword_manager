@@ -1,0 +1,139 @@
+/* stylenavbar.css - Dark Theme Styling for SecureVault Navbar */
+
+/* Navbar-specific variables (prefixed to avoid conflicts) */
+:root {
+    --navbar-primary: #6366f1;
+    --navbar-primary-hover: #818cf8;
+    --navbar-bg: #1f2937;
+    --navbar-text: #f3f4f6;
+    --navbar-text-muted: #9ca3af;
+    --navbar-border: #374151;
+    --navbar-shadow: rgba(0, 0, 0, 0.3);
+}
+
+/* Navbar core styling */
+.navbar {
+    background-color: var(--navbar-bg);
+    box-shadow: 0 2px 10px var(--navbar-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--navbar-border);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.navbar .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    color: var(--navbar-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s ease;
+}
+
+.navbar-brand:hover {
+    color: var(--navbar-primary-hover);
+}
+
+.navbar-collapse {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+    margin-left: 2rem;
+}
+
+.navbar-menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 1.5rem;
+}
+
+.nav-item {
+    position: relative;
+}
+
+.nav-link {
+    color: var(--navbar-text-muted);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--navbar-text);
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.navbar-text {
+    color: var(--navbar-text-muted);
+    font-size: 0.875rem;
+}
+
+/* Navbar-specific button styles */
+.navbar .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.navbar .btn-outline {
+    color: var(--navbar-primary);
+    border: 1px solid var(--navbar-primary);
+    background-color: transparent;
+}
+
+.navbar .btn-outline:hover {
+    background-color: rgba(99, 102, 241, 0.1);
+}
+
+/* Responsive navbar */
+@media (max-width: 768px) {
+    .navbar-collapse {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 0;
+        gap: 1rem;
+    }
+
+    .navbar-menu {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.5rem;
+    }
+
+    .navbar-right {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--navbar-border);
+    }
+}

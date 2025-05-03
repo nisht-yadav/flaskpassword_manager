@@ -1,0 +1,321 @@
+/* Dark Theme Styles */
+:root {
+    --primary-color: #4dabf7;
+    --background-color: #121212;
+    --surface-color: #1e1e1e;
+    --text-color: #e0e0e0;
+    --muted-color: #aaa;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --danger-color: #dc3545;
+    --shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.7);
+    --border-radius: 0.25rem;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    padding-top: 4rem;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+a:hover {
+    color: #81cfff;
+}
+
+ul {
+    list-style: none;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--surface-color);
+    color: var(--text-color);
+    padding: 0.75rem 0;
+    z-index: 1000;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+/* Hide the checkbox */
+.nav-toggle-input {
+    display: none;
+}
+
+/* Style for the burger menu */
+.nav-toggle-label {
+    display: none;
+    cursor: pointer;
+}
+
+.nav-list {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-link {
+    color: var(--muted-color);
+    padding: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--text-color);
+}
+
+/* Form Styles */
+.form-container {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.form-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    background-color: #2e2e2e;
+    color: var(--text-color);
+    border: 1px solid #444;
+    border-radius: var(--border-radius);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+#username {
+    border-color: #fff !important;
+}
+
+.form-control:placeholder-shown {
+    border-color: #fff !important; 
+}
+
+.form-control:valid {
+    border-color: var(--success-color);
+}
+
+.form-control:invalid {
+    border-color: var(--danger-color);
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.form-text {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--muted-color);
+}
+
+.form-check {
+    margin-bottom: 1rem;
+}
+
+.show-password-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.show-password-input {
+    margin-right: 0.5rem;
+}
+
+.check-label {
+    user-select: none;
+    color: var(--text-color);
+}
+
+/* Form button styles */
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: var(--border-radius);
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1e90ff; /* Solid vibrant blue */
+    border-color: #0f7dec;
+}
+
+.btn-primary:hover {
+    background-color: #375b80; /* Slightly darker blue for hover */
+    border-color: #2e6fb2;
+}
+
+.form-submit {
+    margin-top: 1.5rem;
+}
+
+.form-submit .btn {
+    width: 100%;
+}
+
+.form-footer {
+    margin-top: 1.5rem;
+    text-align: center;
+    color: var(--muted-color);
+}
+
+/* Alert Styles */
+.alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius);
+    background-color: var(--surface-color);
+    color: var(--text-color);
+}
+
+.alert-success {
+    border-color: var(--success-color);
+    background-color: rgba(40, 167, 69, 0.2);
+}
+
+.alert-danger {
+    border-color: var(--danger-color);
+    background-color: rgba(220, 53, 69, 0.2);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .nav-toggle-label {
+        display: block;
+    }
+    
+    .nav-icon {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background-color: var(--text-color);
+        position: relative;
+    }
+    
+    .nav-icon::before,
+    .nav-icon::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: var(--text-color);
+        transition: all 0.3s ease;
+    }
+    
+    .nav-icon::before {
+        top: -8px;
+    }
+    
+    .nav-icon::after {
+        top: 8px;
+    }
+    
+    .nav-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: var(--surface-color);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+    
+    /* CSS-only mobile menu toggle */
+    .nav-toggle-input:checked ~ .nav-menu {
+        max-height: 300px;
+    }
+    
+    /* Animation for hamburger icon when opened */
+    .nav-toggle-input:checked ~ .nav-toggle-label .nav-icon {
+        background: transparent;
+    }
+    
+    .nav-toggle-input:checked ~ .nav-toggle-label .nav-icon::before {
+        transform: rotate(45deg);
+        top: 0;
+    }
+    
+    .nav-toggle-input:checked ~ .nav-toggle-label .nav-icon::after {
+        transform: rotate(-45deg);
+        top: 0;
+    }
+    
+    .nav-list {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    
+    .nav-item {
+        margin: 0.5rem 0;
+    }
+}

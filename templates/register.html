@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - SecureVault</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleregister.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a class="brand" href="/">SecureVault</a>
+            <label for="nav-toggle" class="nav-toggle-label">
+                <span class="nav-icon"></span>
+            </label>
+            <input type="checkbox" id="nav-toggle" class="nav-toggle-input">
+            <div class="nav-menu">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/register">Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="form-container">
+            <h2 class="form-title">Create Account</h2>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <form action="/register" method="post">
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="form-label">Master Password</label>
+                    <input type="password" class="form-control" id="password" name="password" 
+                           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$" 
+                           title="Password must be at least 12 characters and include uppercase, lowercase, digits, and special characters"
+                           placeholder="Enter your master password"
+                           required>
+                    <small class="form-text">
+                        Password must be at least 12 characters and include uppercase, lowercase, 
+                        digits, and special characters.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password" class="form-label">Confirm Master Password</label>
+                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" 
+                    placeholder="Re-enter your master password"required oninput="this.setCustomValidity(this.value !== document.getElementById('password').value ? 'Passwords do not match' : '')">
+                </div>
+                <div class="form-check">
+                    <label class="show-password-container">
+                        <input type="checkbox" class="show-password-input" onchange="document.getElementById('password').type = this.checked ? 'text' : 'password'; document.getElementById('confirm_password').type = this.checked ? 'text' : 'password';">
+                        <span class="check-label">Show Password</span>
+                    </label>
+                </div>
+                <div class="form-submit">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+            </form>
+            <div class="form-footer">
+                <p>Already have an account? <a href="/login">Login</a></p>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
