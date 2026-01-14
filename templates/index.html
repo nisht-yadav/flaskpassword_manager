@@ -9,7 +9,7 @@
 <body>
     <nav class="navbar">
         <div class="container">
-            <a class="navbar-brand" href="index.html">SecureVault</a>
+            <a class="navbar-brand" href="{{ url_for('index') }}">SecureVault</a>
             <button class="navbar-toggle" id="menuToggle">
                 <span class="menu-icon"></span>
             </button>
@@ -68,15 +68,5 @@
         </div>
     </main>
 
-    <script>
-        // Simple navigation toggle for mobile
-        const menuToggle = document.getElementById('menuToggle');
-        const navbarMenu = document.getElementById('navbarMenu');
-        
-        menuToggle.addEventListener('click', () => {
-            navbarMenu.classList.toggle('active');
-            menuToggle.classList.toggle('active');
-        });
-    </script>
 </body>
 </html>

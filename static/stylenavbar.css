@@ -1,6 +1,4 @@
-/* stylenavbar.css - Dark Theme Styling for SecureVault Navbar */
 
-/* Navbar-specific variables (prefixed to avoid conflicts) */
 :root {
     --navbar-primary: #6366f1;
     --navbar-primary-hover: #818cf8;
@@ -11,7 +9,6 @@
     --navbar-shadow: rgba(0, 0, 0, 0.3);
 }
 
-/* Navbar core styling */
 .navbar {
     background-color: var(--navbar-bg);
     box-shadow: 0 2px 10px var(--navbar-shadow);
@@ -91,7 +88,7 @@
     font-size: 0.875rem;
 }
 
-/* Navbar-specific button styles */
+
 .navbar .btn {
     display: inline-flex;
     align-items: center;
@@ -114,7 +111,6 @@
     background-color: rgba(99, 102, 241, 0.1);
 }
 
-/* Responsive navbar */
 @media (max-width: 768px) {
     .navbar-collapse {
         flex-direction: column;

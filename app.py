@@ -1,4 +1,3 @@
-# app.py
 import os
 import sqlite3
 import hashlib
@@ -7,7 +6,6 @@ import hmac
 import random
 import string
 import secrets
-import gc
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from functools import wraps
@@ -17,22 +15,19 @@ from cryptography.hazmat.primitives import hashes
 from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad, unpad
 from Crypto.Cipher import AES
-from typing import Tuple, Optional, Dict, List, Any
+from typing import Tuple
 
-# Constants
-ITERATIONS = 600_000
+ITERATIONS = 600000
 SALT_SIZE = 16
-AES_KEY_SIZE = 32  # Using AES-256
+AES_KEY_SIZE = 32
 DB_NAME = 'password_vault.db'
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)  # Generate a random secret key for Flask
+app.secret_key = os.urandom(24)  
 
-# Initialize database
 def initialize_database():
     with sqlite3.connect(DB_NAME) as conn:
         cursor = conn.cursor()
-        # Create users table
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS users (
             user_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -43,7 +38,7 @@ def initialize_database():
             last_login TIMESTAMP
         )
         """)
-        # Create passwords table
+
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS passwords (
             password_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -58,7 +53,7 @@ def initialize_database():
             FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
         )
         """)
-        # Create password history table
+        
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS password_history (
             history_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -69,14 +64,14 @@ def initialize_database():
             FOREIGN KEY (password_id) REFERENCES passwords(password_id) ON DELETE CASCADE
         )
         """)
-        # Indexes
+        
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_passwords_user_id ON passwords(user_id)")
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_passwords_site_url ON passwords(site_url)")
         conn.commit()
 
-initialize_database()  # Initialize database at startup
+initialize_database()
 
-# Password generation and validation
+
 def generate_password(length: int) -> str:
     all_characters = string.ascii_letters + string.digits + string.punctuation
     password = [
@@ -103,7 +98,6 @@ def is_strong_password(password: str) -> bool:
         elif char in string.punctuation: has_special = True
     return has_upper and has_lower and has_digit and has_special
 
-# Authentication functions
 def hash_password(password: str) -> Tuple[bytes, bytes]:
     salt = os.urandom(SALT_SIZE)
     dk = hashlib.pbkdf2_hmac('sha256', password.encode(), salt, ITERATIONS)
@@ -127,7 +121,6 @@ def verify_master_password(entered_password: str, user_name: str) -> Tuple[bytes
     else:
         raise ValueError("Incorrect master password.")
 
-# Encryption and decryption functions
 def derive_aes_key(master_password: str, salt: bytes, key_size: int = AES_KEY_SIZE) -> str:
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
@@ -176,7 +169,6 @@ def decrypt(enc_text: str, key: str, per_entry_salt: bytes) -> str:
     unpadded_data = unpad(decrypted_data, AES.block_size)
     return unpadded_data.decode('utf-8')
 
-# Login required decorator
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -186,7 +178,7 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-# Routes
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -198,13 +190,12 @@ def register():
         password = request.form['password']
         confirm_password = request.form['confirm_password']
         
-        # Validate input
         with sqlite3.connect(DB_NAME) as conn:
             c = conn.cursor()
             c.execute("SELECT user_id FROM users WHERE username=?", (username,))
             if c.fetchone() is not None:
                 flash('Username already exists', 'danger')
-                return redirect(url_for('login'))  # Redirect to login page
+                return redirect(url_for('login'))
         
         if not is_strong_password(password):
             flash('Password must be at least 12 characters and include uppercase, lowercase, digits, and special characters', 'danger')
@@ -214,7 +205,6 @@ def register():
             flash('Passwords do not match', 'danger')
             return render_template('register.html')
         
-        # Register user
         hashed, salt = hash_password(password)
         with sqlite3.connect(DB_NAME) as conn:
             c = conn.cursor()
@@ -232,19 +222,19 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
+        username = request.form['username'].replace(" ", "")
         password = request.form['password']
         
         try:
             salt, user_id = verify_master_password(password, username)
             session['user_id'] = user_id
             session['username'] = username
-            session['master_password'] = password  # Store temporarily for encryption/decryption
+            session['master_password'] = password
             session['salt'] = salt
             flash('Login successful!', 'success')
             return redirect(url_for('dashboard'))
         except ValueError:
-            flash('Invalid username or password', 'danger')  # General error message
+            flash('Invalid username or password', 'danger')
     
     return render_template('login.html')
 
@@ -334,8 +324,7 @@ def add_password():
 @app.route('/generate_password')
 @login_required
 def generate_password_route():
-    length = request.args.get('length', 16, type=int)
-    password = generate_password(length)
+    password = generate_password(16)
     return password
 
 @app.route('/public_password_generator')
@@ -361,7 +350,6 @@ def edit_password(password_id):
     
     aes_key = derive_aes_key(session['master_password'], session['salt'])
     
-    # Get the password entry
     with sqlite3.connect(DB_NAME) as conn:
         c = conn.cursor()
         c.execute(
@@ -378,13 +366,12 @@ def edit_password(password_id):
         decrypted_password = decrypt(encrypted_password, aes_key, entry_salt)
     
     if request.method == 'POST':
-        # Update password
+        
         new_site_url = request.form['site_url']
         new_site_username = request.form['site_username']
         new_password = request.form['password']
         new_notes = request.form['notes']
         
-        # Insert old password into history
         with sqlite3.connect(DB_NAME) as conn:
             c = conn.cursor()
             c.execute(
@@ -394,7 +381,6 @@ def edit_password(password_id):
             )
             conn.commit()
         
-        # Encrypt and update the new password
         new_encrypted_password, new_entry_salt = encrypt(new_password, aes_key)
         
         with sqlite3.connect(DB_NAME) as conn:
@@ -439,7 +425,7 @@ def password_history(password_id):
     
     aes_key = derive_aes_key(session['master_password'], session['salt'])
     
-    # Check if password belongs to user
+
     with sqlite3.connect(DB_NAME) as conn:
         c = conn.cursor()
         c.execute("SELECT site_url FROM passwords WHERE password_id = ? AND user_id = ?", 
@@ -452,7 +438,7 @@ def password_history(password_id):
         
         site_url = site_data[0]
         
-        # Get password history
+
         c.execute(
             "SELECT history_id, encrypted_password, entry_salt, changed_at FROM password_history "
             "WHERE password_id = ? ORDER BY changed_at DESC",
@@ -476,4 +462,4 @@ def password_history(password_id):
     return render_template('password_history.html', site_url=site_url, history=history)
 
 if __name__ == '__main__':
-    app.run(debug=True)  # Run the Flask app on port 5000
+    app.run(debug=True) 

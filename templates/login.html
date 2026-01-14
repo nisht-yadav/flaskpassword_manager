@@ -50,6 +50,12 @@
                     <label for="password">Master Password</label>
                     <input type="password" id="password" name="password" value="" required>
                 </div>
+                <div class="form-check">
+                    <label class="show-password-container">
+                        <input type="checkbox" class="show-password-input" onchange="document.getElementById('password').type = this.checked ? 'text' : 'password'; document.getElementById('confirm_password').type = this.checked ? 'text' : 'password';">
+                        <span class="check-label">Show Password</span>
+                    </label>
+                </div>
         
                 <div class="form-button">
                     <button type="submit">Login</button>
